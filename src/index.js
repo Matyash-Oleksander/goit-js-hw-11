@@ -40,18 +40,13 @@ function onFormSubmit(evt) {
     return;
   }
 
-  // newsApiService.fetchGallery().then(console.log);
   isShown = 0;
   fetchGallery();
   refs.BtnLoadMore.classList.remove('is-hidden');
-  renderGalleryInfo();
-
-  // newsApiService.fetchGallery().then(renderGalleryInfo);
-  // refs.BtnLoadMore.classList.remove('is-hidden');
+  // const img = await renderGalleryInfo();
 }
 // Функція довантаження фото на сторінці
 function onLoadmore() {
-  // newsApiService.fetchGallery().then(renderGalleryInfo);
   fetchGallery();
   newsApiService.incrementPage();
 }
@@ -60,6 +55,7 @@ async function fetchGallery() {
   refs.BtnLoadMore.classList.add('is-hidden');
 
   const r = await newsApiService.fetchGallery();
+  // console.log(r.totalHits);
   const { hits, total } = r;
   isShown += hits.length;
 
@@ -86,9 +82,10 @@ async function fetchGallery() {
   }
 }
 
-function renderGalleryInfo(hits) {
+async function renderGalleryInfo(hits) {
   console.log(hits);
-  const markup = hits.map(hits => createCard(hits)).join('');
+  const markup = await hits.map(hits => createCard(hits)).join('');
+  console.log(hits);
   refs.galleryList.insertAdjacentHTML('beforeend', markup);
   lightbox.refresh();
 }
