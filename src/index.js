@@ -42,7 +42,7 @@ function onFormSubmit(evt) {
 
   isShown = 0;
   fetchGallery();
-  refs.BtnLoadMore.classList.remove('is-hidden');
+  // refs.BtnLoadMore.classList.remove('is-hidden');
   // const img = await renderGalleryInfo();
 }
 // Функція довантаження фото на сторінці
@@ -56,8 +56,10 @@ async function fetchGallery() {
 
   const r = await newsApiService.fetchGallery();
   // console.log(r.totalHits);
-  const { hits, total } = r;
+  const { hits, total, totalHits } = r;
   isShown += hits.length;
+  console.log(hits.length);
+  console.log(total);
 
   if (!hits.length) {
     Notiflix.Notify.warning(
@@ -68,10 +70,9 @@ async function fetchGallery() {
   }
 
   renderGalleryInfo(hits);
-  isShown += hits.length;
 
   if (isShown < total) {
-    Notiflix.Notify.success(`Hooray! We found ${total} images !!!`);
+    Notiflix.Notify.success(`Hooray! We found ${totalHits} images !!!`);
     refs.BtnLoadMore.classList.remove('is-hidden');
   }
 
@@ -83,9 +84,9 @@ async function fetchGallery() {
 }
 
 async function renderGalleryInfo(hits) {
-  console.log(hits);
+  // console.log(hits);
   const markup = await hits.map(hits => createCard(hits)).join('');
-  console.log(hits);
+  // console.log(hits);
   refs.galleryList.insertAdjacentHTML('beforeend', markup);
   lightbox.refresh();
 }
